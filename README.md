@@ -1,13 +1,18 @@
 # SEN-10724
 
-This library provides a set of functions to easily interact with the [SparkFun 9 Degrees of Freedom - Sensor Stick](https://www.sparkfun.com/products/retired/10724) sold at SparkFun website. This electronic board contains an accelerometer, a gyroscope and a magnetometer. In this library, different high level functions are provided, that allow to read data from all three sensors in an easy way. This library also provides functions to change the configuration parameters of each sensor (see datasheet) and functions to calibrate each sensor individually.
+This library provides a set of functions to easily interact with the [SparkFun 9 Degrees of Freedom Sensor Stick](https://www.sparkfun.com/products/retired/10724) sold at SparkFun website. This electronic board contains an accelerometer, a gyroscope and a magnetometer. In this library, different high level functions are provided, that allow to read data from all three sensors in an easy way. This library also provides functions to change the configuration parameters of each sensor (see datasheet) and functions to calibrate each sensor individually.
+
+<p align="center">
+  <img width="200" height="200" src="https://cdn.sparkfun.com//assets/parts/5/6/0/5/10724-01a.jpg">
+</p>
+
 
 # Introduction
 This repository contains a C++ library that can be used with Arduino to interact with the SparkFun 9DOF freedom board, which contains an accelerometer, a magnetometer and a gyroscope. See datasheets for further information:
 
-* Accelerometer (ADXL345) https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf
-* Magnetometer (HMC5883L) http://cdn.sparkfun.com/datasheets/Sensors/Magneto/HMC5883L-FDS.pdf
-* Gyroscope (ITG-3200) https://www.sparkfun.com/datasheets/Sensors/Gyro/PS-ITG-3200-00-01.4.pdf
+* [Accelerometer (ADXL345)](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf)
+* [Magnetometer (HMC5883L)](http://cdn.sparkfun.com/datasheets/Sensors/Magneto/HMC5883L-FDS.pdf)
+* [Gyroscope (ITG-3200)](https://www.sparkfun.com/datasheets/Sensors/Gyro/PS-ITG-3200-00-01.4.pdf)
 
 The board can be connected to the Arduino via I2C using only four connectors. The setup is pretty straight forward, just connect the following pins to Arduino:
 
@@ -16,10 +21,6 @@ The board can be connected to the Arduino via I2C using only four connectors. Th
 * GND
 * VCC
 
-Note that different Arduinos might have the I2C port in different pins. It is not the same using an Arduino UNO than a Leonardo or a Mega.
-
-![SparkFun Sensor](https://github.com/alrevuelta/IMUino-SparkFun/blob/master/10724-01a.jpeg)
-
 # Usage
 A class `SEN10724.cpp` is provided in the `src` folder. Just instantiate an object with:
 ```cpp
@@ -27,7 +28,7 @@ SEN10724 sen10724;
 ```
 Its important to bear in mind that we are dealing with three different hardware components that are in the same board, using I2C protocol to communicate with them, so each one has its own address and its own registers. If you are interested in this, you can check both the datasheets and the `SEN10724.h`file, which has all the constants taken from the documentation of each sensor.
 
-Next step is to initialize each component with different parameters. Depending on the component, we will need to set different ones. The accelerometer needs the sampling frequency and the scale. The gyroscope the sampling frequency, low pass configuration, clock and rate divider. Finally, the magnetometer needs the range, the measurement modea and the datarate. This configuration is done as follows:
+Next step is to initialize each component with different parameters. Depending on the component, we will need to set different ones. The accelerometer needs the sampling frequency and the scale. The gyroscope the sampling frequency, low pass configuration, clock and rate divider. Finally, the magnetometer needs the range, the measurement mode and the datarate. This configuration is done as follows:
 
 For the accelerometer
 ```cpp
@@ -54,7 +55,7 @@ sen10724.setMagDataRate(HMC5883L_DATARATE_15HZ);
 sen10724.setMagSamples(HMC5883L_SAMPLES_1);
 ```
 
-Note that the parameters such as `ITG3200_FS_2000` or `HMC5883L_SAMPLES_1` are defined in `SEN10724.h` file in the enums `itg3200_fs_t` and `hmc5883l_samples_t`. You can find in that find all enums in there, so feel free to configure each sensor as you will. Note that some combinations might not work, so read the datesheet carefully for further information about that.
+Note that the parameters such as `ITG3200_FS_2000` or `HMC5883L_SAMPLES_1` are defined in `SEN10724.h` file in the enums `itg3200_fs_t` and `hmc5883l_samples_t`. You can find all enums in the header file, so feel free to configure each sensor as you wish. Note that some combinations might not work, so read the datesheet carefully for further information about that.
 
 Once we have set up our sensors, we are ready to start reading data from them. Three different functions are provided:
 * `readRaw`: Simply reads the data that is stored in each register (x, y, z) of each sensor. Note that this values are not very useful because the have not been converted to real unit (such as m/s/s or degrees/s).
